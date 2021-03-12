@@ -1,47 +1,48 @@
-interface WeaponBehavior {
+namespace Patterns {
+  interface WeaponBehavior {
     useWeapon(): void;
-}
+  }
 
-class KnifeBehavior implements WeaponBehavior {
+  class KnifeBehavior implements WeaponBehavior {
     useWeapon(): void {
-        console.log('Fight with knife')
+      console.log("Fight with knife");
     }
-}
+  }
 
-class AxeBehavior implements WeaponBehavior {
+  class AxeBehavior implements WeaponBehavior {
     useWeapon(): void {
-        console.log('Fight with axe')
+      console.log("Fight with axe");
     }
-}
+  }
 
-abstract class Character {
+  abstract class Character {
     wb: WeaponBehavior;
     abstract fight(): void;
-}
+  }
 
-class Thief extends Character {
+  class Thief extends Character {
     constructor() {
-        super();
-        this.wb = new KnifeBehavior();
+      super();
+      this.wb = new KnifeBehavior();
     }
 
     fight(): void {
-        this.wb.useWeapon();
+      this.wb.useWeapon();
     }
-}
+  }
 
-class Ork extends Character {
+  class Ork extends Character {
     constructor() {
-        super();
-        this.wb = new AxeBehavior();
+      super();
+      this.wb = new AxeBehavior();
     }
 
     fight(): void {
-        this.wb.useWeapon();
+      this.wb.useWeapon();
     }
-}
+  }
 
-(() => {
+  (() => {
     const thief = new Thief();
     const ork = new Ork();
 
@@ -50,6 +51,7 @@ class Ork extends Character {
     chars.push(thief);
 
     for (const char of chars) {
-        char.fight();
+      char.fight();
     }
-})()
+  })();
+}
