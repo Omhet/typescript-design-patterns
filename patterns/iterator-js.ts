@@ -1,11 +1,6 @@
 namespace Patterns {
-  interface CollectionIterator<T> {
-    next(): T;
-    hasNext(): boolean;
-  }
-
   interface Menu {
-    getIterator(): CollectionIterator<MenuItem>;
+    getIterator(): IterableIterator<MenuItem>;
   }
 
   interface MenuItem {
@@ -16,58 +11,29 @@ namespace Patterns {
   class BreakfastMenu implements Menu {
     items: MenuItem[] = [];
 
-    getIterator(): CollectionIterator<MenuItem> {
-      return new BreakfastMenuIterator(this.items);
+    getIterator(): IterableIterator<MenuItem> {
+      return this.items.values();
     }
 
     addItem(item: MenuItem) {
       this.items.push(item);
     }
   }
-  class BreakfastMenuIterator implements CollectionIterator<MenuItem> {
-    position = 0;
-
-    constructor(private items: MenuItem[]) {}
-
-    next(): MenuItem {
-      return this.items[this.position++];
-    }
-    hasNext(): boolean {
-      return this.position < this.items.length;
-    }
-  }
-
   class LunchMenu implements Menu {
     items: Map<string, MenuItem> = new Map();
 
-    getIterator(): CollectionIterator<MenuItem> {
-      return new LunchMenuIterator(this.items);
+    getIterator(): IterableIterator<MenuItem> {
+      return this.items.values();
     }
 
     addItem(item: MenuItem) {
       this.items.set(item.name, item);
     }
   }
-  class LunchMenuIterator implements CollectionIterator<MenuItem> {
-    items: MenuItem[] = [];
-    position = 0;
-
-    constructor(itemsMap: Map<string, MenuItem>) {
-      this.items = Array.from(itemsMap.values());
-    }
-
-    next(): MenuItem {
-      return this.items[this.position++];
-    }
-    hasNext(): boolean {
-      return this.position < this.items.length;
-    }
-  }
 
   const printMenu = (menu: Menu) => {
     const iterator = menu.getIterator();
-    while (iterator.hasNext()) {
-      const { price, name } = iterator.next();
+    for (const { price, name } of iterator) {
       console.log(`${name} - ${price}`);
     }
   };
